@@ -7,7 +7,6 @@ namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\Uuid;
 use Cycle\ORM\Entity\Macros\Uuid\Tests\Fixtures\Uuid\User;
 use Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\BaseTest;
 use Cycle\ORM\Entity\Macros\Uuid\Tests\Traits\TableTrait;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\UuidTypecast;
 use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid1Listener;
 use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid2Listener;
 use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid3Listener;
@@ -173,7 +172,7 @@ abstract class UuidListenerTest extends BaseTest
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::TYPECAST => [
-                    'uuid' => [UuidTypecast::class, 'cast']
+                    'uuid' => [Uuid::class, 'fromString']
                 ]
             ]
         ]));

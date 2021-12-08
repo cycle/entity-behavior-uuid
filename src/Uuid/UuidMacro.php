@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Macros\Uuid\Uuid;
 
 use Cycle\ORM\Entity\Macros\Common\Schema\BaseModifier;
-use Cycle\ORM\Entity\Macros\Uuid\Common\Schema\RegistryModifier;
+use Cycle\ORM\Entity\Macros\Common\Schema\RegistryModifier;
 use Cycle\Schema\Registry;
+use Ramsey\Uuid\Uuid;
 
 abstract class UuidMacro extends BaseModifier
 {
@@ -20,6 +21,10 @@ abstract class UuidMacro extends BaseModifier
 
         if ($this->column !== null) {
             $modifier->addUuidColumn($this->column, $this->field);
+            $modifier->setTypecast(
+                $registry->getEntity($this->role)->getFields()->get($this->field),
+                [Uuid::class, 'fromString']
+            );
         }
     }
 
@@ -29,5 +34,9 @@ abstract class UuidMacro extends BaseModifier
         $this->column = $modifier->findColumnName($this->field, $this->column) ?? $this->field;
 
         $modifier->addUuidColumn($this->column, $this->field);
+        $modifier->setTypecast(
+            $registry->getEntity($this->role)->getFields()->get($this->field),
+            [Uuid::class, 'fromString']
+        );
     }
 }
