@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Uuid;
+namespace Cycle\ORM\Entity\Macros\Uuid;
 
+use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid6 as Listener;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use JetBrains\PhpStorm\ArrayShape;
@@ -18,7 +19,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
  * @Target({"CLASS"})
  */
 #[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
-final class Uuid6Macro extends UuidMacro
+final class Uuid6 extends Uuid
 {
     /**
      * @param non-empty-string $field Uuid property name
@@ -42,7 +43,7 @@ final class Uuid6Macro extends UuidMacro
 
     protected function getListenerClass(): string
     {
-        return Uuid6Listener::class;
+        return Listener::class;
     }
 
     #[ArrayShape(['field' => 'string', 'node' => 'string|null', 'clockSeq' => 'int|null'])]

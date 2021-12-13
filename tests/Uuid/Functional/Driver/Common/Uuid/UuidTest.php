@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
 use Spiral\Tokenizer\Config\TokenizerConfig;
 use Spiral\Tokenizer\Tokenizer;
 
-abstract class UuidMacroTest extends BaseTest
+abstract class UuidTest extends BaseTest
 {
     protected Registry $registry;
 
