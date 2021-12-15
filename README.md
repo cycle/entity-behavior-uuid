@@ -3,7 +3,7 @@
 The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require cycle/entity-macros-uuid
+composer require cycle/entity-behavior-uuid
 ```
 
 ## License:

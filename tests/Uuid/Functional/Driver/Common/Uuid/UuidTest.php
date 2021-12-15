@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
 
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Fixtures\Uuid\Post;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\BaseTest;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Post;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid;
 use Spiral\Tokenizer\Config\TokenizerConfig;

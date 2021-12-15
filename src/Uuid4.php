@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid;
 
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid4 as Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid4 as Listener;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use JetBrains\PhpStorm\ArrayShape;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid;
 
-use Cycle\ORM\Entity\Macros\Common\Schema\BaseModifier;
-use Cycle\ORM\Entity\Macros\Common\Schema\RegistryModifier;
+use Cycle\ORM\Entity\Behavior\Schema\BaseModifier;
+use Cycle\ORM\Entity\Behavior\Schema\RegistryModifier;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 

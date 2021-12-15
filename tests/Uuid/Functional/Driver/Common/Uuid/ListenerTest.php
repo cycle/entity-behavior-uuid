@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
 
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\BaseTest;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Traits\TableTrait;
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid1;
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid2;
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid3;
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid4;
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid5;
-use Cycle\ORM\Entity\Macros\Uuid\Listener\Uuid6;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid1;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid3;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid4;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6;
 use Cycle\ORM\Heap\Heap;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
