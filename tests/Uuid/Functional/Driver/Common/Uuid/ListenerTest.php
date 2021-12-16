@@ -40,7 +40,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testAssignManually(): void
     {
-        $this->withMacros(Uuid4::class);
+        $this->withListeners(Uuid4::class);
 
         $user = new User();
         $user->uuid = Uuid::uuid4();
@@ -56,7 +56,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testUuid1(): void
     {
-        $this->withMacros([Uuid1::class, ['node' => '00000fffffff', 'clockSeq' => 0xffff]]);
+        $this->withListeners([Uuid1::class, ['node' => '00000fffffff', 'clockSeq' => 0xffff]]);
 
         $user = new User();
         $this->save($user);
@@ -71,7 +71,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testUuid2(): void
     {
-        $this->withMacros([
+        $this->withListeners([
             Uuid2::class,
             [
                 'localDomain' => Uuid::DCE_DOMAIN_PERSON,
@@ -92,7 +92,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testUuid3(): void
     {
-        $this->withMacros([
+        $this->withListeners([
             Uuid3::class,
             [
                 'namespace' => Uuid::NAMESPACE_URL,
@@ -113,7 +113,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testUuid4(): void
     {
-        $this->withMacros(Uuid4::class);
+        $this->withListeners(Uuid4::class);
 
         $user = new User();
         $this->save($user);
@@ -128,7 +128,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testUuid5(): void
     {
-        $this->withMacros([
+        $this->withListeners([
             Uuid5::class,
             ['namespace' => Uuid::NAMESPACE_URL, 'name' => 'https://example.com/foo']
         ]);
@@ -146,7 +146,7 @@ abstract class ListenerTest extends BaseTest
 
     public function testUuid6(): void
     {
-        $this->withMacros([Uuid6::class, ['node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669]]);
+        $this->withListeners([Uuid6::class, ['node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669]]);
 
         $user = new User();
         $this->save($user);
@@ -159,7 +159,7 @@ abstract class ListenerTest extends BaseTest
         $this->assertIsString($data->uuid->toString());
     }
 
-    public function withMacros(array|string $macros): void
+    public function withListeners(array|string $listeners): void
     {
         $this->withSchema(new Schema([
             User::class => [
@@ -168,7 +168,7 @@ abstract class ListenerTest extends BaseTest
                 SchemaInterface::TABLE => 'users',
                 SchemaInterface::PRIMARY_KEY => 'uuid',
                 SchemaInterface::COLUMNS => ['uuid'],
-                SchemaInterface::MACROS => [$macros],
+                SchemaInterface::LISTENERS => [$listeners],
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::TYPECAST => [
