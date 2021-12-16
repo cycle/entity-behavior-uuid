@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid;
 
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2 as Listener;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use JetBrains\PhpStorm\ArrayShape;
@@ -19,7 +20,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * @Target({"CLASS"})
  */
 #[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
-final class Uuid2Macro extends UuidMacro
+final class Uuid2 extends Uuid
 {
     /**
      * @param int $localDomain The local domain to use when generating bytes,
@@ -52,7 +53,7 @@ final class Uuid2Macro extends UuidMacro
 
     protected function getListenerClass(): string
     {
-        return Uuid2Listener::class;
+        return Listener::class;
     }
 
     #[ArrayShape([

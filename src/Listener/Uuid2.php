@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Listener;
 
-use Cycle\ORM\Entity\Macros\Attribute\Listen;
-use Cycle\ORM\Entity\Macros\Common\Event\Mapper\Command\OnCreate;
+use Cycle\ORM\Entity\Behavior\Attribute\Listen;
+use Cycle\ORM\Entity\Behavior\Event\Mapper\Command\OnCreate;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 
-final class Uuid2Listener
+final class Uuid2
 {
     public function __construct(
         private int $localDomain,

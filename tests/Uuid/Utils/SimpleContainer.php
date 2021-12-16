@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Utils;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Utils;
 
 use Closure;
 use Exception;

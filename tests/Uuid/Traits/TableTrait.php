@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Traits;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits;
 
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Utils\TableRenderer;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Utils\TableRenderer;
 use Cycle\Database\Database;
 use Cycle\Database\ForeignKeyInterface;
 

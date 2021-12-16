@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Traits;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits;
 
 use Cycle\Database\Driver\DriverInterface;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Utils\TestLogger;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Utils\TestLogger;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 

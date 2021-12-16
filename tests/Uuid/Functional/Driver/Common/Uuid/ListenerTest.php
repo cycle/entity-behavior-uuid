@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
 
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\BaseTest;
-use Cycle\ORM\Entity\Macros\Uuid\Tests\Traits\TableTrait;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid1Listener;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid2Listener;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid3Listener;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid4Listener;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid5Listener;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid6Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid1;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid3;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid4;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6;
 use Cycle\ORM\Heap\Heap;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
@@ -22,7 +22,7 @@ use Ramsey\Uuid\Type\Integer;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-abstract class UuidListenerTest extends BaseTest
+abstract class ListenerTest extends BaseTest
 {
     use TableTrait;
 
@@ -40,7 +40,7 @@ abstract class UuidListenerTest extends BaseTest
 
     public function testAssignManually(): void
     {
-        $this->withMacros(Uuid4Listener::class);
+        $this->withMacros(Uuid4::class);
 
         $user = new User();
         $user->uuid = Uuid::uuid4();
@@ -56,7 +56,7 @@ abstract class UuidListenerTest extends BaseTest
 
     public function testUuid1(): void
     {
-        $this->withMacros([Uuid1Listener::class, ['node' => '00000fffffff', 'clockSeq' => 0xffff]]);
+        $this->withMacros([Uuid1::class, ['node' => '00000fffffff', 'clockSeq' => 0xffff]]);
 
         $user = new User();
         $this->save($user);
@@ -72,7 +72,7 @@ abstract class UuidListenerTest extends BaseTest
     public function testUuid2(): void
     {
         $this->withMacros([
-            Uuid2Listener::class,
+            Uuid2::class,
             [
                 'localDomain' => Uuid::DCE_DOMAIN_PERSON,
                 'localIdentifier' => new Integer('12345678')
@@ -93,7 +93,7 @@ abstract class UuidListenerTest extends BaseTest
     public function testUuid3(): void
     {
         $this->withMacros([
-            Uuid3Listener::class,
+            Uuid3::class,
             [
                 'namespace' => Uuid::NAMESPACE_URL,
                 'name' => 'https://example.com/foo'
@@ -113,7 +113,7 @@ abstract class UuidListenerTest extends BaseTest
 
     public function testUuid4(): void
     {
-        $this->withMacros(Uuid4Listener::class);
+        $this->withMacros(Uuid4::class);
 
         $user = new User();
         $this->save($user);
@@ -129,7 +129,7 @@ abstract class UuidListenerTest extends BaseTest
     public function testUuid5(): void
     {
         $this->withMacros([
-            Uuid5Listener::class,
+            Uuid5::class,
             ['namespace' => Uuid::NAMESPACE_URL, 'name' => 'https://example.com/foo']
         ]);
 
@@ -146,7 +146,7 @@ abstract class UuidListenerTest extends BaseTest
 
     public function testUuid6(): void
     {
-        $this->withMacros([Uuid6Listener::class, ['node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669]]);
+        $this->withMacros([Uuid6::class, ['node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669]]);
 
         $user = new User();
         $this->save($user);

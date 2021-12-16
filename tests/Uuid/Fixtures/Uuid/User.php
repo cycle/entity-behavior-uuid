@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Macros\Uuid\Tests\Fixtures\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid;
 
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
-use Cycle\ORM\Entity\Macros\Uuid\Uuid\Uuid1Macro;
+use Cycle\ORM\Entity\Behavior\Uuid\Uuid1;
 use Ramsey\Uuid\UuidInterface;
 
 #[Entity]
-#[Uuid1Macro]
+#[Uuid1]
 class User
 {
     #[Column(type: 'uuid', primary: true)]

@@ -52,7 +52,7 @@ $drivers = [
 ];
 
 $db = getenv('DB') ?: null;
-\Cycle\ORM\Entity\Macros\Uuid\Tests\Functional\Driver\Common\BaseTest::$config = [
+\Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest::$config = [
         'debug' => getenv('DB_DEBUG') ?: false,
     ] + ($db === null
         ? $drivers
