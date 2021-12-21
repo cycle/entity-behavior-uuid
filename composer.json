@@ -3,7 +3,7 @@
     "type": "library",
     "require": {
         "php": ">=8.0",
-        "cycle/entity-behavior": "dev-master",
+        "cycle/entity-behavior": "1.x-dev",
         "ramsey/uuid": "^4.0"
     },
     "require-dev": {
