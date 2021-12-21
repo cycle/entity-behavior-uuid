@@ -1,5 +1,5 @@
 # Cycle ORM Entity Behavior UUID 
-[![Latest Stable Version](https://poser.pugx.org/cycle/cycle/entity-behavior-uuid/version)](https://packagist.org/packages/cycle/entity-behavior-uuid)
+[![Latest Stable Version](https://poser.pugx.org/cycle/entity-behavior-uuid/version)](https://packagist.org/packages/cycle/entity-behavior-uuid)
 [![Build Status](https://github.com/cycle/entity-behavior-uuid/workflows/build/badge.svg)](https://github.com/cycle/entity-behavior-uuid/actions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/entity-behavior-uuid/badges/quality-score.png?b=1.x)](https://scrutinizer-ci.com/g/cycle/entity-behavior-uuid/?branch=1.x)
 [![Codecov](https://codecov.io/gh/cycle/entity-behavior-uuid/graph/badge.svg)](https://codecov.io/gh/cycle/entity-behavior)
