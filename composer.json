@@ -3,11 +3,11 @@
     "type": "library",
     "require": {
         "php": ">=8.0",
-        "cycle/entity-behavior": "1.x-dev",
+        "cycle/entity-behavior": "^1.0",
         "ramsey/uuid": "^4.0"
     },
     "require-dev": {
-        "cycle/annotated": "2.0.x-dev",
+        "cycle/annotated": "^3.0",
         "phpunit/phpunit": "^9.5",
         "spiral/tokenizer": "^2.8",
         "vimeo/psalm": "^4.13"
