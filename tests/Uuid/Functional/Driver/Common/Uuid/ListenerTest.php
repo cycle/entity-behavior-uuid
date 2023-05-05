@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
 
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid7;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
@@ -156,6 +157,21 @@ abstract class ListenerTest extends BaseTest
 
         $this->assertInstanceOf(UuidInterface::class, $data->uuid);
         $this->assertSame(6, $data->uuid->getVersion());
+        $this->assertIsString($data->uuid->toString());
+    }
+
+    public function testUuid7(): void
+    {
+        $this->withListeners(Uuid7::class);
+
+        $user = new User();
+        $this->save($user);
+
+        $select = new Select($this->orm->with(heap: new Heap()), User::class);
+        $data = $select->fetchOne();
+
+        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
+        $this->assertSame(7, $data->uuid->getVersion());
         $this->assertIsString($data->uuid->toString());
     }
 
