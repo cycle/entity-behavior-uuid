@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  * @NamedArgumentConstructor()
  * @Target({"CLASS"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE), NamedArgumentConstructor]
 final class Uuid5 extends Uuid
 {
     /**

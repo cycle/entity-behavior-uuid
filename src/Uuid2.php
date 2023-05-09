@@ -19,7 +19,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * @NamedArgumentConstructor()
  * @Target({"CLASS"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE), NamedArgumentConstructor]
 final class Uuid2 extends Uuid
 {
     /**

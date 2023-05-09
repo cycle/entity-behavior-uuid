@@ -17,10 +17,10 @@ use Cycle\ORM\Config\RelationConfig;
 use Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\Loggable;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Utils\SimpleContainer;
+use Cycle\ORM\EntityManager;
 use Cycle\ORM\Factory;
 use Cycle\ORM\SchemaInterface;
 use Cycle\ORM\ORM;
-use Cycle\ORM\Transaction;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator\GenerateModifiers;
 use Cycle\Schema\Generator\GenerateRelations;
@@ -32,7 +32,10 @@ use Cycle\Schema\Generator\ResetTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\Registry;
 use PHPUnit\Framework\TestCase;
+use Spiral\Attributes\AnnotationReader;
 use Spiral\Attributes\AttributeReader;
+use Spiral\Attributes\Composite\SelectiveReader;
+use Spiral\Attributes\ReaderInterface;
 use Spiral\Tokenizer\Tokenizer;
 
 abstract class BaseTest extends TestCase
@@ -44,6 +47,7 @@ abstract class BaseTest extends TestCase
     public static array $config;
     protected ?DatabaseManager $dbal = null;
     protected ?ORM $orm = null;
+    protected ?DriverInterface $driver = null;
     private static array $driverCache = [];
 
     public function setUp(): void
@@ -127,10 +131,8 @@ abstract class BaseTest extends TestCase
         return $this->orm;
     }
 
-    public function compileWithTokenizer(Tokenizer $tokenizer): void
+    public function compileWithTokenizer(Tokenizer $tokenizer, ReaderInterface $reader): void
     {
-        $reader = new AttributeReader();
-
         (new Compiler())->compile($this->registry = new Registry($this->dbal), [
             new Entities($tokenizer->classLocator(), $reader),
             new ResetTables(),
@@ -153,10 +155,17 @@ abstract class BaseTest extends TestCase
 
     protected function save(object ...$entities): void
     {
-        $tr = new Transaction($this->orm);
+        $em = new EntityManager($this->orm);
         foreach ($entities as $entity) {
-            $tr->persist($entity);
+            $em->persist($entity);
         }
-        $tr->run();
+        $em->run();
+    }
+
+    public static function readersDataProvider(): \Traversable
+    {
+        yield [new AnnotationReader()];
+        yield [new AttributeReader()];
+        yield [new SelectiveReader([new AttributeReader(), new AnnotationReader()])];
     }
 }

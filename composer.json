@@ -10,7 +10,7 @@
         "cycle/annotated": "^3.0",
         "phpunit/phpunit": "^9.5",
         "spiral/tokenizer": "^2.8",
-        "vimeo/psalm": "^4.13"
+        "vimeo/psalm": "^5.11"
     },
     "license": "MIT",
     "autoload": {
