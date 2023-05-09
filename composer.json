@@ -4,7 +4,7 @@
     "require": {
         "php": ">=8.0",
         "cycle/entity-behavior": "^1.0",
-        "ramsey/uuid": "^4.0"
+        "ramsey/uuid": "^4.5"
     },
     "require-dev": {
         "cycle/annotated": "^3.0",
