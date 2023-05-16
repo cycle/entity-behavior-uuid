@@ -17,13 +17,18 @@ final class Uuid2
         private string $field = 'uuid',
         private IntegerObject|string|null $localIdentifier = null,
         private Hexadecimal|string|null $node = null,
-        private ?int $clockSeq = null
+        private ?int $clockSeq = null,
+        private bool $generate = true
     ) {
     }
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void
     {
+        if (!$this->generate || isset($event->state->getData()[$this->field])) {
+            return;
+        }
+
         if (\is_string($this->localIdentifier)) {
             $this->localIdentifier = new IntegerObject($this->localIdentifier);
         }
@@ -31,11 +36,9 @@ final class Uuid2
             $this->node = new Hexadecimal($this->node);
         }
 
-        if (!isset($event->state->getData()[$this->field])) {
-            $event->state->register(
-                $this->field,
-                Uuid::uuid2($this->localDomain, $this->localIdentifier, $this->node, $this->clockSeq)
-            );
-        }
+        $event->state->register(
+            $this->field,
+            Uuid::uuid2($this->localDomain, $this->localIdentifier, $this->node, $this->clockSeq)
+        );
     }
 }

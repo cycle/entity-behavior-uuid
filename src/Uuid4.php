@@ -22,12 +22,14 @@ final class Uuid4 extends Uuid
     /**
      * @param non-empty-string $field Uuid property name
      * @param non-empty-string|null $column Uuid column name
+     * @param bool $generate Indicates whether to generate a new UUID or not
      *
      * @see \Ramsey\Uuid\UuidFactoryInterface::uuid4()
      */
     public function __construct(
         string $field = 'uuid',
-        ?string $column = null
+        ?string $column = null,
+        private bool $generate = true
     ) {
         $this->field = $field;
         $this->column = $column;
@@ -38,11 +40,12 @@ final class Uuid4 extends Uuid
         return Listener::class;
     }
 
-    #[ArrayShape(['field' => 'string'])]
+    #[ArrayShape(['field' => 'string', 'generate' => 'bool'])]
     protected function getListenerArgs(): array
     {
         return [
-            'field' => $this->field
+            'field' => $this->field,
+            'generate' => $this->generate
         ];
     }
 }

@@ -14,14 +14,15 @@ final class Uuid5
     public function __construct(
         private string|UuidInterface $namespace,
         private string $name,
-        private string $field = 'uuid'
+        private string $field = 'uuid',
+        private bool $generate = true
     ) {
     }
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void
     {
-        if (!isset($event->state->getData()[$this->field])) {
+        if ($this->generate && !isset($event->state->getData()[$this->field])) {
             $event->state->register($this->field, Uuid::uuid5($this->namespace, $this->name));
         }
     }

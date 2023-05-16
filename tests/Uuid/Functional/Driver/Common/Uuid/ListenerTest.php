@@ -35,6 +35,7 @@ abstract class ListenerTest extends BaseTest
             'users',
             [
                 'uuid' => 'string',
+                'optional_uuid' => 'string,nullable'
             ]
         );
     }
@@ -53,6 +54,24 @@ abstract class ListenerTest extends BaseTest
         $data = $select->fetchOne();
 
         $this->assertSame($bytes, $data->uuid->getBytes());
+    }
+
+    /**
+     * @dataProvider generateFalseDataProvider
+     */
+    public function testWithGenerateFalse(array $listener): void
+    {
+        $this->withListeners($listener);
+
+        $user = new User();
+        $user->uuid = Uuid::uuid4();
+
+        $this->save($user);
+
+        $select = new Select($this->orm->with(heap: new Heap()), User::class);
+        $data = $select->fetchData();
+
+        $this->assertNull($data[0]['optional_uuid']);
     }
 
     public function testUuid1(): void
@@ -183,14 +202,75 @@ abstract class ListenerTest extends BaseTest
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'users',
                 SchemaInterface::PRIMARY_KEY => 'uuid',
-                SchemaInterface::COLUMNS => ['uuid'],
+                SchemaInterface::COLUMNS => ['uuid', 'optional_uuid'],
                 SchemaInterface::LISTENERS => [$listeners],
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::TYPECAST => [
-                    'uuid' => [Uuid::class, 'fromString']
+                    'uuid' => [Uuid::class, 'fromString'],
+                    'optional_uuid' => [Uuid::class, 'fromString']
                 ]
             ]
         ]));
+    }
+
+    public static function generateFalseDataProvider(): \Traversable
+    {
+        yield [
+            [
+                Uuid1::class,
+                [
+                    'generate' => false,
+                    'field' => 'optional_uuid',
+                    'node' => '00000fffffff',
+                    'clockSeq' => 0xffff
+                ]
+            ]
+        ];
+        yield [
+            [
+                Uuid2::class,
+                [
+                    'generate' => false,
+                    'field' => 'optional_uuid',
+                    'localDomain' => Uuid::DCE_DOMAIN_PERSON,
+                    'localIdentifier' => new Integer('12345678')
+                ]
+            ]
+        ];
+        yield [
+            [
+                Uuid3::class,
+                [
+                    'generate' => false,
+                    'field' => 'optional_uuid',
+                    'namespace' => Uuid::NAMESPACE_URL,
+                    'name' => 'https://example.com/foo'
+                ]
+            ]
+        ];
+        yield [[Uuid4::class, ['generate' => false, 'field' => 'optional_uuid']]];
+        yield [
+            [
+                Uuid5::class,
+                [
+                    'generate' => false,
+                    'field' => 'optional_uuid',
+                    'namespace' => Uuid::NAMESPACE_URL,
+                    'name' => 'https://example.com/foo'
+                ]
+            ]
+        ];
+        yield [
+            [
+                Uuid6::class,
+                [
+                    'generate' => false,
+                    'field' => 'optional_uuid',
+                    'node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669
+                ]
+            ]
+        ];
+        yield [[Uuid7::class, ['generate' => false, 'field' => 'optional_uuid']]];
     }
 }

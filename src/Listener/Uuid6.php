@@ -14,19 +14,22 @@ final class Uuid6
     public function __construct(
         private string $field = 'uuid',
         private Hexadecimal|string|null $node = null,
-        private ?int $clockSeq = null
+        private ?int $clockSeq = null,
+        private bool $generate = true
     ) {
     }
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void
     {
+        if (!$this->generate || isset($event->state->getData()[$this->field])) {
+            return;
+        }
+
         if (\is_string($this->node)) {
             $this->node = new Hexadecimal($this->node);
         }
 
-        if (!isset($event->state->getData()[$this->field])) {
-            $event->state->register($this->field, Uuid::uuid6($this->node, $this->clockSeq));
-        }
+        $event->state->register($this->field, Uuid::uuid6($this->node, $this->clockSeq));
     }
 }
