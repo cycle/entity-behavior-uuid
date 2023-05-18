@@ -33,7 +33,7 @@ final class Uuid7Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'uuid',
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -47,7 +47,7 @@ final class Uuid7Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'custom_uuid',
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -61,12 +61,12 @@ final class Uuid7Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'custom_uuid',
-                            'generate' => false
+                            'nullable' => true,
                         ],
                     ]
                 ]
             ],
-            ['custom_uuid', null, false]
+            ['custom_uuid', null, true]
         ];
     }
 }

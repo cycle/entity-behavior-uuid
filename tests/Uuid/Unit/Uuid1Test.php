@@ -35,7 +35,7 @@ final class Uuid1Test extends TestCase
                             'field' => 'uuid',
                             'node' => null,
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -51,7 +51,7 @@ final class Uuid1Test extends TestCase
                             'field' => 'custom_uuid',
                             'node' => null,
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -67,7 +67,7 @@ final class Uuid1Test extends TestCase
                             'field' => 'custom_uuid',
                             'node' => 'foo',
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -83,7 +83,7 @@ final class Uuid1Test extends TestCase
                             'field' => 'custom_uuid',
                             'node' => 'foo',
                             'clockSeq' => 3,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -99,12 +99,12 @@ final class Uuid1Test extends TestCase
                             'field' => 'custom_uuid',
                             'node' => 'foo',
                             'clockSeq' => 3,
-                            'generate' => false
+                            'nullable' => true,
                         ],
                     ]
                 ]
             ],
-            ['custom_uuid', null, 'foo', 3, false]
+            ['custom_uuid', null, 'foo', 3, true]
         ];
     }
 }

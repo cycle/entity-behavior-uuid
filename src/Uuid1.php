@@ -30,7 +30,7 @@ final class Uuid1 extends Uuid
      * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
      *     that could arise when the clock is set backwards in time or if the
      *     node ID changes
-     * @param bool $generate Indicates whether to generate a new UUID or not
+     * @param bool $nullable Indicates whether to generate a new UUID or not
      *
      * @see \Ramsey\Uuid\UuidFactoryInterface::uuid1()
      */
@@ -39,10 +39,11 @@ final class Uuid1 extends Uuid
         ?string $column = null,
         private Hexadecimal|int|string|null $node = null,
         private ?int $clockSeq = null,
-        private bool $generate = true
+        bool $nullable = false
     ) {
         $this->field = $field;
         $this->column = $column;
+        $this->nullable = $nullable;
     }
 
     protected function getListenerClass(): string
@@ -50,14 +51,14 @@ final class Uuid1 extends Uuid
         return Listener::class;
     }
 
-    #[ArrayShape(['field' => 'string', 'node' => 'int|string|null', 'clockSeq' => 'int|null', 'generate' => 'bool'])]
+    #[ArrayShape(['field' => 'string', 'node' => 'int|string|null', 'clockSeq' => 'int|null', 'nullable' => 'bool'])]
     protected function getListenerArgs(): array
     {
         return [
             'field' => $this->field,
             'node' => $this->node instanceof Hexadecimal ? (string) $this->node : $this->node,
             'clockSeq' => $this->clockSeq,
-            'generate' => $this->generate
+            'nullable' => $this->nullable
         ];
     }
 }

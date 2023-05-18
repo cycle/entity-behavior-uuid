@@ -18,14 +18,14 @@ final class Uuid2
         private IntegerObject|string|null $localIdentifier = null,
         private Hexadecimal|string|null $node = null,
         private ?int $clockSeq = null,
-        private bool $generate = true
+        private bool $nullable = false
     ) {
     }
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void
     {
-        if (!$this->generate || isset($event->state->getData()[$this->field])) {
+        if ($this->nullable || isset($event->state->getData()[$this->field])) {
             return;
         }
 

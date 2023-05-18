@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
 
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\MultipleUuid;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\NullableUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Post;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
@@ -89,5 +90,26 @@ abstract class UuidTest extends BaseTest
         $this->assertTrue($fields->hasColumn('other_uuid7'));
         $this->assertSame('uuid', $fields->get('otherUuid7')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('otherUuid7')->getTypecast());
+    }
+
+    /**
+     * @dataProvider readersDataProvider
+     */
+    public function testAddNullableColumn(ReaderInterface $reader): void
+    {
+        $this->compileWithTokenizer($this->tokenizer, $reader);
+
+        $fields = $this->registry->getEntity(NullableUuid::class)->getFields();
+
+        $this->assertTrue($fields->has('notDefinedUuid'));
+        $this->assertTrue($fields->hasColumn('not_defined_uuid'));
+        $this->assertSame('uuid', $fields->get('notDefinedUuid')->getType());
+        $this->assertSame([Uuid::class, 'fromString'], $fields->get('notDefinedUuid')->getTypecast());
+        $this->assertTrue(
+            $this->registry
+                ->getTableSchema($this->registry->getEntity(NullableUuid::class))
+                ->column('not_defined_uuid')
+                ->isNullable()
+        );
     }
 }

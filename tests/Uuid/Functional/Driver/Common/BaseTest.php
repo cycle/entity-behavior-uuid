@@ -52,10 +52,6 @@ abstract class BaseTest extends TestCase
 
     public function setUp(): void
     {
-        if (self::$config['debug'] ?? false) {
-            $this->enableProfiling();
-        }
-
         $this->dbal = new DatabaseManager(new DatabaseConfig());
         $this->dbal->addDatabase(
             new Database(
@@ -64,6 +60,11 @@ abstract class BaseTest extends TestCase
                 $this->getDriver()
             )
         );
+
+        if (self::$config['debug'] ?? false) {
+            $this->setUpLogger($this->getDriver());
+            $this->enableProfiling();
+        }
     }
 
     public function tearDown(): void

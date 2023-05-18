@@ -57,9 +57,9 @@ abstract class ListenerTest extends BaseTest
     }
 
     /**
-     * @dataProvider generateFalseDataProvider
+     * @dataProvider nullableTrueDataProvider
      */
-    public function testWithGenerateFalse(array $listener): void
+    public function testWithNullableTrue(array $listener): void
     {
         $this->withListeners($listener);
 
@@ -214,13 +214,13 @@ abstract class ListenerTest extends BaseTest
         ]));
     }
 
-    public static function generateFalseDataProvider(): \Traversable
+    public static function nullableTrueDataProvider(): \Traversable
     {
         yield [
             [
                 Uuid1::class,
                 [
-                    'generate' => false,
+                    'nullable' => true,
                     'field' => 'optional_uuid',
                     'node' => '00000fffffff',
                     'clockSeq' => 0xffff
@@ -231,7 +231,7 @@ abstract class ListenerTest extends BaseTest
             [
                 Uuid2::class,
                 [
-                    'generate' => false,
+                    'nullable' => true,
                     'field' => 'optional_uuid',
                     'localDomain' => Uuid::DCE_DOMAIN_PERSON,
                     'localIdentifier' => new Integer('12345678')
@@ -242,19 +242,19 @@ abstract class ListenerTest extends BaseTest
             [
                 Uuid3::class,
                 [
-                    'generate' => false,
+                    'nullable' => true,
                     'field' => 'optional_uuid',
                     'namespace' => Uuid::NAMESPACE_URL,
                     'name' => 'https://example.com/foo'
                 ]
             ]
         ];
-        yield [[Uuid4::class, ['generate' => false, 'field' => 'optional_uuid']]];
+        yield [[Uuid4::class, ['nullable' => true, 'field' => 'optional_uuid']]];
         yield [
             [
                 Uuid5::class,
                 [
-                    'generate' => false,
+                    'nullable' => true,
                     'field' => 'optional_uuid',
                     'namespace' => Uuid::NAMESPACE_URL,
                     'name' => 'https://example.com/foo'
@@ -265,12 +265,12 @@ abstract class ListenerTest extends BaseTest
             [
                 Uuid6::class,
                 [
-                    'generate' => false,
+                    'nullable' => true,
                     'field' => 'optional_uuid',
                     'node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669
                 ]
             ]
         ];
-        yield [[Uuid7::class, ['generate' => false, 'field' => 'optional_uuid']]];
+        yield [[Uuid7::class, ['nullable' => true, 'field' => 'optional_uuid']]];
     }
 }

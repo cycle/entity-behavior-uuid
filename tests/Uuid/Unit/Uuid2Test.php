@@ -37,7 +37,7 @@ final class Uuid2Test extends TestCase
                             'localIdentifier' => null,
                             'node' => null,
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -55,7 +55,7 @@ final class Uuid2Test extends TestCase
                             'localIdentifier' => null,
                             'node' => null,
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -73,7 +73,7 @@ final class Uuid2Test extends TestCase
                             'localIdentifier' => 'foo',
                             'node' => null,
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -91,7 +91,7 @@ final class Uuid2Test extends TestCase
                             'localIdentifier' => 'foo',
                             'node' => 'bar',
                             'clockSeq' => null,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -109,7 +109,7 @@ final class Uuid2Test extends TestCase
                             'localIdentifier' => 'foo',
                             'node' => 'bar',
                             'clockSeq' => 4,
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -125,12 +125,12 @@ final class Uuid2Test extends TestCase
                             'localIdentifier' => 'foo',
                             'node' => 'bar',
                             'clockSeq' => 4,
-                            'generate' => false
+                            'nullable' => true,
                         ],
                     ]
                 ]
             ],
-            [3, 'custom_uuid', null, 'foo', 'bar', 4, false]
+            [3, 'custom_uuid', null, 'foo', 'bar', 4, true]
         ];
     }
 }

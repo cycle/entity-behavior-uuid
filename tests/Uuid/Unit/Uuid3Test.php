@@ -35,7 +35,7 @@ final class Uuid3Test extends TestCase
                             'field' => 'uuid',
                             'namespace' => 'foo',
                             'name' => 'bar',
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -51,7 +51,7 @@ final class Uuid3Test extends TestCase
                             'field' => 'custom_uuid',
                             'namespace' => 'foo',
                             'name' => 'bar',
-                            'generate' => true
+                            'nullable' => false,
                         ],
                     ]
                 ]
@@ -67,12 +67,12 @@ final class Uuid3Test extends TestCase
                             'field' => 'custom_uuid',
                             'namespace' => 'foo',
                             'name' => 'bar',
-                            'generate' => false
+                            'nullable' => true,
                         ],
                     ]
                 ]
             ],
-            ['foo', 'bar', 'custom_uuid', null, false]
+            ['foo', 'bar', 'custom_uuid', null, true]
         ];
     }
 }

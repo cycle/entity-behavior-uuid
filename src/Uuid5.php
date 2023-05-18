@@ -26,7 +26,7 @@ final class Uuid5 extends Uuid
      * @param non-empty-string $name The name to use for creating a UUID
      * @param non-empty-string $field Uuid property name
      * @param non-empty-string|null $column Uuid column name
-     * @param bool $generate Indicates whether to generate a new UUID or not
+     * @param bool $nullable Indicates whether to generate a new UUID or not
      *
      * @see \Ramsey\Uuid\UuidFactoryInterface::uuid5()
      */
@@ -35,10 +35,11 @@ final class Uuid5 extends Uuid
         private string $name,
         string $field = 'uuid',
         ?string $column = null,
-        private bool $generate = true
+        bool $nullable = false
     ) {
         $this->field = $field;
         $this->column = $column;
+        $this->nullable = $nullable;
     }
 
     protected function getListenerClass(): string
@@ -46,14 +47,14 @@ final class Uuid5 extends Uuid
         return Listener::class;
     }
 
-    #[ArrayShape(['field' => 'string', 'namespace' => 'string', 'name' => 'string', 'generate' => 'bool'])]
+    #[ArrayShape(['field' => 'string', 'namespace' => 'string', 'name' => 'string', 'nullable' => 'bool'])]
     protected function getListenerArgs(): array
     {
         return [
             'field' => $this->field,
             'namespace' => $this->namespace instanceof UuidInterface ? (string) $this->namespace : $this->namespace,
             'name' => $this->name,
-            'generate' => $this->generate
+            'nullable' => $this->nullable
         ];
     }
 }
