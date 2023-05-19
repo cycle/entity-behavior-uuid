@@ -16,21 +16,24 @@ use JetBrains\PhpStorm\ArrayShape;
  * @NamedArgumentConstructor()
  * @Target({"CLASS"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE), NamedArgumentConstructor]
 final class Uuid4 extends Uuid
 {
     /**
      * @param non-empty-string $field Uuid property name
      * @param non-empty-string|null $column Uuid column name
+     * @param bool $nullable Indicates whether to generate a new UUID or not
      *
      * @see \Ramsey\Uuid\UuidFactoryInterface::uuid4()
      */
     public function __construct(
         string $field = 'uuid',
-        ?string $column = null
+        ?string $column = null,
+        bool $nullable = false
     ) {
         $this->field = $field;
         $this->column = $column;
+        $this->nullable = $nullable;
     }
 
     protected function getListenerClass(): string
@@ -38,11 +41,12 @@ final class Uuid4 extends Uuid
         return Listener::class;
     }
 
-    #[ArrayShape(['field' => 'string'])]
+    #[ArrayShape(['field' => 'string', 'nullable' => 'bool'])]
     protected function getListenerArgs(): array
     {
         return [
-            'field' => $this->field
+            'field' => $this->field,
+            'nullable' => $this->nullable
         ];
     }
 }

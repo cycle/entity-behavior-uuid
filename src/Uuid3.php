@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  * @NamedArgumentConstructor()
  * @Target({"CLASS"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE), NamedArgumentConstructor]
 final class Uuid3 extends Uuid
 {
     /**
@@ -26,6 +26,7 @@ final class Uuid3 extends Uuid
      * @param non-empty-string $name The name to use for creating a UUID
      * @param non-empty-string $field Uuid property name
      * @param non-empty-string|null $column Uuid column name
+     * @param bool $nullable Indicates whether to generate a new UUID or not
      *
      * @see \Ramsey\Uuid\UuidFactoryInterface::uuid3()
      */
@@ -33,10 +34,12 @@ final class Uuid3 extends Uuid
         private string|UuidInterface $namespace,
         private string $name,
         string $field = 'uuid',
-        ?string $column = null
+        ?string $column = null,
+        bool $nullable = false
     ) {
         $this->field = $field;
         $this->column = $column;
+        $this->nullable = $nullable;
     }
 
     protected function getListenerClass(): string
@@ -44,13 +47,14 @@ final class Uuid3 extends Uuid
         return Listener::class;
     }
 
-    #[ArrayShape(['field' => 'string', 'namespace' => 'string', 'name' => 'string'])]
+    #[ArrayShape(['field' => 'string', 'namespace' => 'string', 'name' => 'string', 'nullable' => 'bool'])]
     protected function getListenerArgs(): array
     {
         return [
             'field' => $this->field,
             'namespace' => $this->namespace instanceof UuidInterface ? (string) $this->namespace : $this->namespace,
-            'name' => $this->name
+            'name' => $this->name,
+            'nullable' => $this->nullable
         ];
     }
 }

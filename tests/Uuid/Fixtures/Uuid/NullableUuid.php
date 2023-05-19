@@ -12,10 +12,12 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @Entity
  * @Uuid1
+ * @Uuid1(field="notDefinedUuid", column="not_defined_uuid", nullable=true)
  */
 #[Entity]
 #[Uuid1]
-class User
+#[Uuid1(field: 'notDefinedUuid', column: 'not_defined_uuid', nullable: true)]
+final class NullableUuid
 {
     /**
      * @Column(type="uuid", primary=true)

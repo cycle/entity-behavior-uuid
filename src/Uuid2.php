@@ -19,7 +19,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * @NamedArgumentConstructor()
  * @Target({"CLASS"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE), NamedArgumentConstructor]
 final class Uuid2 extends Uuid
 {
     /**
@@ -36,6 +36,7 @@ final class Uuid2 extends Uuid
      * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
      *     that could arise when the clock is set backwards in time or if the
      *     node ID changes
+     * @param bool $nullable Indicates whether to generate a new UUID or not
      *
      * @see \Ramsey\Uuid\UuidFactoryInterface::uuid2()
      */
@@ -45,10 +46,12 @@ final class Uuid2 extends Uuid
         ?string $column = null,
         private IntegerObject|string|null $localIdentifier = null,
         private Hexadecimal|string|null $node = null,
-        private ?int $clockSeq = null
+        private ?int $clockSeq = null,
+        bool $nullable = false
     ) {
         $this->field = $field;
         $this->column = $column;
+        $this->nullable = $nullable;
     }
 
     protected function getListenerClass(): string
@@ -61,7 +64,8 @@ final class Uuid2 extends Uuid
         'localDomain' => 'int',
         'localIdentifier' => 'string|null',
         'node' => 'string|null',
-        'clockSeq' => 'int|null'
+        'clockSeq' => 'int|null',
+        'nullable' => 'bool'
     ])]
     protected function getListenerArgs(): array
     {
@@ -72,7 +76,8 @@ final class Uuid2 extends Uuid
                 ? (string) $this->localIdentifier
                 : $this->localIdentifier,
             'node' => $this->node instanceof Hexadecimal ? (string) $this->node : $this->node,
-            'clockSeq' => $this->clockSeq
+            'clockSeq' => $this->clockSeq,
+            'nullable' => $this->nullable
         ];
     }
 }
