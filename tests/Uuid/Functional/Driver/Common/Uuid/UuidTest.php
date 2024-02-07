@@ -9,6 +9,7 @@ use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\NullableUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Post;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
+use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid;
 use Spiral\Attributes\ReaderInterface;
@@ -44,6 +45,7 @@ abstract class UuidTest extends BaseTest
         $this->assertTrue($fields->hasColumn('uuid'));
         $this->assertSame('uuid', $fields->get('uuid')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('uuid')->getTypecast());
+        $this->assertSame(SchemaInterface::GENERATED_PHP_INSERT, $fields->get('uuid')->getGenerated());
         $this->assertSame(1, $fields->count());
     }
 
@@ -60,6 +62,7 @@ abstract class UuidTest extends BaseTest
         $this->assertTrue($fields->hasColumn('custom_uuid'));
         $this->assertSame('uuid', $fields->get('customUuid')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('customUuid')->getTypecast());
+        $this->assertSame(SchemaInterface::GENERATED_PHP_INSERT, $fields->get('customUuid')->getGenerated());
     }
 
     /**
@@ -75,21 +78,25 @@ abstract class UuidTest extends BaseTest
         $this->assertTrue($fields->hasColumn('uuid'));
         $this->assertSame('uuid', $fields->get('uuid')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('uuid')->getTypecast());
+        $this->assertSame(SchemaInterface::GENERATED_PHP_INSERT, $fields->get('uuid')->getGenerated());
 
         $this->assertTrue($fields->has('otherUuid'));
         $this->assertTrue($fields->hasColumn('other_uuid'));
         $this->assertSame('uuid', $fields->get('otherUuid')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('otherUuid')->getTypecast());
+        $this->assertSame(SchemaInterface::GENERATED_PHP_INSERT, $fields->get('otherUuid')->getGenerated());
 
         $this->assertTrue($fields->has('uuid7'));
         $this->assertTrue($fields->hasColumn('uuid7'));
         $this->assertSame('uuid', $fields->get('uuid7')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('uuid7')->getTypecast());
+        $this->assertSame(SchemaInterface::GENERATED_PHP_INSERT, $fields->get('uuid7')->getGenerated());
 
         $this->assertTrue($fields->has('otherUuid7'));
         $this->assertTrue($fields->hasColumn('other_uuid7'));
         $this->assertSame('uuid', $fields->get('otherUuid7')->getType());
         $this->assertSame([Uuid::class, 'fromString'], $fields->get('otherUuid7')->getTypecast());
+        $this->assertSame(SchemaInterface::GENERATED_PHP_INSERT, $fields->get('otherUuid7')->getGenerated());
     }
 
     /**
@@ -111,5 +118,6 @@ abstract class UuidTest extends BaseTest
                 ->column('not_defined_uuid')
                 ->isNullable()
         );
+        $this->assertNull($fields->get('notDefinedUuid')->getGenerated());
     }
 }
