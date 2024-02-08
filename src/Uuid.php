@@ -6,7 +6,7 @@ namespace Cycle\ORM\Entity\Behavior\Uuid;
 
 use Cycle\ORM\Entity\Behavior\Schema\BaseModifier;
 use Cycle\ORM\Entity\Behavior\Schema\RegistryModifier;
-use Cycle\ORM\SchemaInterface;
+use Cycle\ORM\Schema\GeneratedField;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
@@ -24,7 +24,7 @@ abstract class Uuid extends BaseModifier
             $modifier->addUuidColumn(
                 $this->column,
                 $this->field,
-                $this->nullable ? null : SchemaInterface::GENERATED_PHP_INSERT
+                $this->nullable ? null : GeneratedField::BEFORE_INSERT
             )->nullable($this->nullable);
             $modifier->setTypecast(
                 $registry->getEntity($this->role)->getFields()->get($this->field),
@@ -41,7 +41,7 @@ abstract class Uuid extends BaseModifier
         $modifier->addUuidColumn(
             $this->column,
             $this->field,
-            $this->nullable ? null : SchemaInterface::GENERATED_PHP_INSERT
+            $this->nullable ? null : GeneratedField::BEFORE_INSERT
         )->nullable($this->nullable);
         $modifier->setTypecast(
             $registry->getEntity($this->role)->getFields()->get($this->field),
