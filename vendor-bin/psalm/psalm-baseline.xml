@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="7.11.0@9e0d0f88bc0a4233357a9aeb4b32da060644e196">
+  <file src="src/Uuid.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$this->column]]></code>
+      <code><![CDATA[$this->column]]></code>
+    </ArgumentTypeCoercion>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function compute(Registry $registry): void]]></code>
+      <code><![CDATA[public function render(Registry $registry): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid1.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape(['field' => 'string', 'node' => 'int|string|null', 'clockSeq' => 'int|null', 'nullable' => 'bool'])]]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid2.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape([]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid3.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape(['field' => 'string', 'namespace' => 'string', 'name' => 'string', 'nullable' => 'bool'])]]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid4.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape(['field' => 'string', 'nullable' => 'bool'])]]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid5.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape(['field' => 'string', 'namespace' => 'string', 'name' => 'string', 'nullable' => 'bool'])]]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid6.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape(['field' => 'string', 'node' => 'string|null', 'clockSeq' => 'int|null', 'nullable' => 'bool'])]]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Uuid7.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[#[ArrayShape(['field' => 'string', 'nullable' => 'bool'])]]]></code>
+      <code><![CDATA[protected function getListenerClass(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+</files>
