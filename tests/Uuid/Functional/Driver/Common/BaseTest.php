@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common;
 
 use Cycle\Annotated\Entities;
+use Cycle\Annotated\Locator\TokenizerEntityLocator;
 use Cycle\Annotated\MergeColumns;
 use Cycle\Annotated\MergeIndexes;
 use Cycle\Database\Config\DatabaseConfig;
@@ -135,7 +136,7 @@ abstract class BaseTest extends TestCase
     public function compileWithTokenizer(Tokenizer $tokenizer, ReaderInterface $reader): void
     {
         (new Compiler())->compile($this->registry = new Registry($this->dbal), [
-            new Entities($tokenizer->classLocator(), $reader),
+            new Entities(new TokenizerEntityLocator($tokenizer->classLocator(), $reader), $reader),
             new ResetTables(),
             new MergeColumns($reader),
             new MergeIndexes($reader),
