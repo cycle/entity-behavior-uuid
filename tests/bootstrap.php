@@ -26,7 +26,7 @@ $drivers = [
             user: 'root',
             password: 'YourStrong!Passw0rd',
         ),
-        queryCache: true
+        queryCache: true,
     ),
     'postgres' => new Database\Config\PostgresDriverConfig(
         connection: new Database\Config\Postgres\TcpConnectionConfig(
@@ -46,16 +46,17 @@ $drivers = [
             port: 11433,
             trustServerCertificate: true,
             user: 'SA',
-            password: 'YourStrong!Passw0rd'
+            password: 'YourStrong!Passw0rd',
         ),
-        queryCache: true
+        queryCache: true,
     ),
 ];
 
 $db = getenv('DB') ?: null;
 \Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest::$config = [
-        'debug' => getenv('DB_DEBUG') ?: false,
-    ] + ($db === null
-        ? $drivers
-        : array_intersect_key($drivers, array_flip((array)$db))
-    );
+    'debug' => getenv('DB_DEBUG') ?: false,
+] + (
+    $db === null
+    ? $drivers
+    : array_intersect_key($drivers, array_flip((array) $db))
+);

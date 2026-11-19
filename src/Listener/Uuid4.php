@@ -12,9 +12,8 @@ final class Uuid4
 {
     public function __construct(
         private string $field = 'uuid',
-        private bool $nullable = false
-    ) {
-    }
+        private bool $nullable = false,
+    ) {}
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void

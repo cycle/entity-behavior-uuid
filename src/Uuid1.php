@@ -39,7 +39,7 @@ final class Uuid1 extends Uuid
         ?string $column = null,
         private Hexadecimal|int|string|null $node = null,
         private ?int $clockSeq = null,
-        bool $nullable = false
+        bool $nullable = false,
     ) {
         $this->field = $field;
         $this->column = $column;
@@ -58,7 +58,7 @@ final class Uuid1 extends Uuid
             'field' => $this->field,
             'node' => $this->node instanceof Hexadecimal ? (string) $this->node : $this->node,
             'clockSeq' => $this->clockSeq,
-            'nullable' => $this->nullable
+            'nullable' => $this->nullable,
         ];
     }
 }

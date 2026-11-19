@@ -24,11 +24,11 @@ abstract class Uuid extends BaseModifier
             $modifier->addUuidColumn(
                 $this->column,
                 $this->field,
-                $this->nullable ? null : GeneratedField::BEFORE_INSERT
+                $this->nullable ? null : GeneratedField::BEFORE_INSERT,
             )->nullable($this->nullable);
             $modifier->setTypecast(
                 $registry->getEntity($this->role)->getFields()->get($this->field),
-                [RamseyUuid::class, 'fromString']
+                [RamseyUuid::class, 'fromString'],
             );
         }
     }
@@ -41,11 +41,11 @@ abstract class Uuid extends BaseModifier
         $modifier->addUuidColumn(
             $this->column,
             $this->field,
-            $this->nullable ? null : GeneratedField::BEFORE_INSERT
+            $this->nullable ? null : GeneratedField::BEFORE_INSERT,
         )->nullable($this->nullable);
         $modifier->setTypecast(
             $registry->getEntity($this->role)->getFields()->get($this->field),
-            [RamseyUuid::class, 'fromString']
+            [RamseyUuid::class, 'fromString'],
         );
     }
 }

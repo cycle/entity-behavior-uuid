@@ -20,8 +20,8 @@ use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\Loggable;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Utils\SimpleContainer;
 use Cycle\ORM\EntityManager;
 use Cycle\ORM\Factory;
-use Cycle\ORM\SchemaInterface;
 use Cycle\ORM\ORM;
+use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator\GenerateModifiers;
 use Cycle\Schema\Generator\GenerateRelations;
@@ -51,33 +51,11 @@ abstract class BaseTest extends TestCase
     protected ?DriverInterface $driver = null;
     private static array $driverCache = [];
 
-    public function setUp(): void
+    public static function readersDataProvider(): \Traversable
     {
-        $this->dbal = new DatabaseManager(new DatabaseConfig());
-        $this->dbal->addDatabase(
-            new Database(
-                'default',
-                '',
-                $this->getDriver()
-            )
-        );
-
-        if (self::$config['debug'] ?? false) {
-            $this->setUpLogger($this->getDriver());
-            $this->enableProfiling();
-        }
-    }
-
-    public function tearDown(): void
-    {
-        $this->dropDatabase($this->dbal->database('default'));
-
-        $this->orm = null;
-        $this->dbal = null;
-
-        if (\function_exists('gc_collect_cycles')) {
-            gc_collect_cycles();
-        }
+        yield [new AnnotationReader()];
+        yield [new AttributeReader()];
+        yield [new SelectiveReader([new AttributeReader(), new AnnotationReader()])];
     }
 
     public function getDriver(): DriverInterface
@@ -94,29 +72,6 @@ abstract class BaseTest extends TestCase
         return static::$driverCache[static::DRIVER] = $this->driver;
     }
 
-    protected function dropDatabase(Database $database = null): void
-    {
-        if ($database === null) {
-            return;
-        }
-
-        foreach ($database->getTables() as $table) {
-            $schema = $table->getSchema();
-
-            foreach ($schema->getForeignKeys() as $foreign) {
-                $schema->dropForeignKey($foreign->getColumns());
-            }
-
-            $schema->save(Handler::DROP_FOREIGN_KEYS);
-        }
-
-        foreach ($database->getTables() as $table) {
-            $schema = $table->getSchema();
-            $schema->declareDropped();
-            $schema->save();
-        }
-    }
-
     public function withSchema(SchemaInterface $schema): ORM
     {
         $this->orm = new ORM(
@@ -124,10 +79,10 @@ abstract class BaseTest extends TestCase
                 $this->dbal,
                 RelationConfig::getDefault(),
                 null,
-                new ArrayCollectionFactory()
+                new ArrayCollectionFactory(),
             ),
             $schema,
-            new EventDrivenCommandGenerator($schema, new SimpleContainer())
+            new EventDrivenCommandGenerator($schema, new SimpleContainer()),
         );
 
         return $this->orm;
@@ -150,6 +105,58 @@ abstract class BaseTest extends TestCase
         ]);
     }
 
+    public function setUp(): void
+    {
+        $this->dbal = new DatabaseManager(new DatabaseConfig());
+        $this->dbal->addDatabase(
+            new Database(
+                'default',
+                '',
+                $this->getDriver(),
+            ),
+        );
+
+        if (self::$config['debug'] ?? false) {
+            $this->setUpLogger($this->getDriver());
+            $this->enableProfiling();
+        }
+    }
+
+    public function tearDown(): void
+    {
+        $this->dropDatabase($this->dbal->database('default'));
+
+        $this->orm = null;
+        $this->dbal = null;
+
+        if (\function_exists('gc_collect_cycles')) {
+            gc_collect_cycles();
+        }
+    }
+
+    protected function dropDatabase(?Database $database = null): void
+    {
+        if ($database === null) {
+            return;
+        }
+
+        foreach ($database->getTables() as $table) {
+            $schema = $table->getSchema();
+
+            foreach ($schema->getForeignKeys() as $foreign) {
+                $schema->dropForeignKey($foreign->getColumns());
+            }
+
+            $schema->save(Handler::DROP_FOREIGN_KEYS);
+        }
+
+        foreach ($database->getTables() as $table) {
+            $schema = $table->getSchema();
+            $schema->declareDropped();
+            $schema->save();
+        }
+    }
+
     protected function getDatabase(): Database
     {
         return $this->dbal->database('default');
@@ -162,12 +169,5 @@ abstract class BaseTest extends TestCase
             $em->persist($entity);
         }
         $em->run();
-    }
-
-    public static function readersDataProvider(): \Traversable
-    {
-        yield [new AnnotationReader()];
-        yield [new AttributeReader()];
-        yield [new SelectiveReader([new AttributeReader(), new AnnotationReader()])];
     }
 }

@@ -29,7 +29,7 @@ final class Uuid7 extends Uuid
     public function __construct(
         string $field = 'uuid',
         ?string $column = null,
-        bool $nullable = false
+        bool $nullable = false,
     ) {
         $this->field = $field;
         $this->column = $column;
@@ -46,7 +46,7 @@ final class Uuid7 extends Uuid
     {
         return [
             'field' => $this->field,
-            'nullable' => $this->nullable
+            'nullable' => $this->nullable,
         ];
     }
 }

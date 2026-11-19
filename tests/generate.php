@@ -61,7 +61,7 @@ foreach ($classes as $class) {
     $path = str_replace(
         [str_replace('\\', '/', __DIR__), 'Uuid/Functional/Driver/Common/'],
         '',
-        str_replace('\\', '/', $class->getFileName())
+        str_replace('\\', '/', $class->getFileName()),
     );
 
     $path = ltrim($path, '/');
@@ -73,7 +73,7 @@ foreach ($classes as $class) {
         $namespace = str_replace(
             'Cycle\\ORM\\Entity\\Behavior\\Uuid\\Tests\\Functional\\Driver\\Common',
             $details['namespace'],
-            $class->getNamespaceName()
+            $class->getNamespaceName(),
         );
 
         if (!is_dir($dir)) {
@@ -107,8 +107,8 @@ PHP,
                 $class->getName(),
                 $driver,
                 $class->getShortName(),
-                $driver
-            )
+                $driver,
+            ),
         );
     }
 }

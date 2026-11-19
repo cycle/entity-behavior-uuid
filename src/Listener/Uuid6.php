@@ -15,9 +15,8 @@ final class Uuid6
         private string $field = 'uuid',
         private Hexadecimal|string|null $node = null,
         private ?int $clockSeq = null,
-        private bool $nullable = false
-    ) {
-    }
+        private bool $nullable = false,
+    ) {}
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void

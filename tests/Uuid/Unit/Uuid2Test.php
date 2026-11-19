@@ -5,25 +5,13 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Unit;
 
 use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
-use Cycle\ORM\Entity\Behavior\Uuid\Uuid2;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2 as Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Uuid2;
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
 
 final class Uuid2Test extends TestCase
 {
-    /**
-     * @dataProvider schemaDataProvider
-     */
-    public function testModifySchema(array $expected, array $args): void
-    {
-        $schema = [];
-        $uuid = new Uuid2(...$args);
-        $uuid->modifySchema($schema);
-
-        $this->assertSame($expected, $schema);
-    }
-
     public static function schemaDataProvider(): \Traversable
     {
         yield [
@@ -39,10 +27,10 @@ final class Uuid2Test extends TestCase
                             'clockSeq' => null,
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            [3]
+            [3],
         ];
         yield [
             [
@@ -57,10 +45,10 @@ final class Uuid2Test extends TestCase
                             'clockSeq' => null,
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            [3, 'custom_uuid']
+            [3, 'custom_uuid'],
         ];
         yield [
             [
@@ -75,10 +63,10 @@ final class Uuid2Test extends TestCase
                             'clockSeq' => null,
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            [3, 'custom_uuid', null, 'foo']
+            [3, 'custom_uuid', null, 'foo'],
         ];
         yield [
             [
@@ -93,10 +81,10 @@ final class Uuid2Test extends TestCase
                             'clockSeq' => null,
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            [3, 'custom_uuid', null, 'foo', 'bar']
+            [3, 'custom_uuid', null, 'foo', 'bar'],
         ];
         yield [
             [
@@ -111,8 +99,8 @@ final class Uuid2Test extends TestCase
                             'clockSeq' => 4,
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [3, 'custom_uuid', null, 'foo', 'bar', 4],
             [
@@ -127,10 +115,22 @@ final class Uuid2Test extends TestCase
                             'clockSeq' => 4,
                             'nullable' => true,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            [3, 'custom_uuid', null, 'foo', 'bar', 4, true]
+            [3, 'custom_uuid', null, 'foo', 'bar', 4, true],
         ];
+    }
+
+    /**
+     * @dataProvider schemaDataProvider
+     */
+    public function testModifySchema(array $expected, array $args): void
+    {
+        $schema = [];
+        $uuid = new Uuid2(...$args);
+        $uuid->modifySchema($schema);
+
+        $this->assertSame($expected, $schema);
     }
 }

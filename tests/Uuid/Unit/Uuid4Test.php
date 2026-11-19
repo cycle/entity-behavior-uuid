@@ -5,25 +5,13 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Unit;
 
 use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
-use Cycle\ORM\Entity\Behavior\Uuid\Uuid4;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid4 as Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Uuid4;
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
 
 final class Uuid4Test extends TestCase
 {
-    /**
-     * @dataProvider schemaDataProvider
-     */
-    public function testModifySchema(array $expected, array $args): void
-    {
-        $schema = [];
-        $uuid = new Uuid4(...$args);
-        $uuid->modifySchema($schema);
-
-        $this->assertSame($expected, $schema);
-    }
-
     public static function schemaDataProvider(): \Traversable
     {
         yield [
@@ -35,10 +23,10 @@ final class Uuid4Test extends TestCase
                             'field' => 'uuid',
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            []
+            [],
         ];
         yield [
             [
@@ -49,10 +37,10 @@ final class Uuid4Test extends TestCase
                             'field' => 'custom_uuid',
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            ['custom_uuid']
+            ['custom_uuid'],
         ];
         yield [
             [
@@ -63,10 +51,22 @@ final class Uuid4Test extends TestCase
                             'field' => 'custom_uuid',
                             'nullable' => true,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            ['custom_uuid', null, true]
+            ['custom_uuid', null, true],
         ];
+    }
+
+    /**
+     * @dataProvider schemaDataProvider
+     */
+    public function testModifySchema(array $expected, array $args): void
+    {
+        $schema = [];
+        $uuid = new Uuid4(...$args);
+        $uuid->modifySchema($schema);
+
+        $this->assertSame($expected, $schema);
     }
 }
