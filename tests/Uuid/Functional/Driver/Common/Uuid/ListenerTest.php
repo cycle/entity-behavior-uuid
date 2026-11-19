@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
 
-use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid7;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid1;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid3;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid4;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid7;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
 use Cycle\ORM\Heap\Heap;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
@@ -27,17 +27,64 @@ abstract class ListenerTest extends BaseTest
 {
     use TableTrait;
 
-    public function setUp(): void
+    public static function nullableTrueDataProvider(): \Traversable
     {
-        parent::setUp();
-
-        $this->makeTable(
-            'users',
+        yield [
             [
-                'uuid' => 'string',
-                'optional_uuid' => 'string,nullable'
-            ]
-        );
+                Uuid1::class,
+                [
+                    'nullable' => true,
+                    'field' => 'optional_uuid',
+                    'node' => '00000fffffff',
+                    'clockSeq' => 0xffff,
+                ],
+            ],
+        ];
+        yield [
+            [
+                Uuid2::class,
+                [
+                    'nullable' => true,
+                    'field' => 'optional_uuid',
+                    'localDomain' => Uuid::DCE_DOMAIN_PERSON,
+                    'localIdentifier' => new Integer('12345678'),
+                ],
+            ],
+        ];
+        yield [
+            [
+                Uuid3::class,
+                [
+                    'nullable' => true,
+                    'field' => 'optional_uuid',
+                    'namespace' => Uuid::NAMESPACE_URL,
+                    'name' => 'https://example.com/foo',
+                ],
+            ],
+        ];
+        yield [[Uuid4::class, ['nullable' => true, 'field' => 'optional_uuid']]];
+        yield [
+            [
+                Uuid5::class,
+                [
+                    'nullable' => true,
+                    'field' => 'optional_uuid',
+                    'namespace' => Uuid::NAMESPACE_URL,
+                    'name' => 'https://example.com/foo',
+                ],
+            ],
+        ];
+        yield [
+            [
+                Uuid6::class,
+                [
+                    'nullable' => true,
+                    'field' => 'optional_uuid',
+                    'node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669,
+                ],
+            ],
+        ];
+        yield [[Uuid7::class, ['nullable' => true, 'field' => 'optional_uuid']]];
     }
 
     public function testAssignManually(): void
@@ -95,8 +142,8 @@ abstract class ListenerTest extends BaseTest
             Uuid2::class,
             [
                 'localDomain' => Uuid::DCE_DOMAIN_PERSON,
-                'localIdentifier' => new Integer('12345678')
-            ]
+                'localIdentifier' => new Integer('12345678'),
+            ],
         ]);
 
         $user = new User();
@@ -116,8 +163,8 @@ abstract class ListenerTest extends BaseTest
             Uuid3::class,
             [
                 'namespace' => Uuid::NAMESPACE_URL,
-                'name' => 'https://example.com/foo'
-            ]
+                'name' => 'https://example.com/foo',
+            ],
         ]);
 
         $user = new User();
@@ -150,7 +197,7 @@ abstract class ListenerTest extends BaseTest
     {
         $this->withListeners([
             Uuid5::class,
-            ['namespace' => Uuid::NAMESPACE_URL, 'name' => 'https://example.com/foo']
+            ['namespace' => Uuid::NAMESPACE_URL, 'name' => 'https://example.com/foo'],
         ]);
 
         $user = new User();
@@ -208,69 +255,22 @@ abstract class ListenerTest extends BaseTest
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::TYPECAST => [
                     'uuid' => [Uuid::class, 'fromString'],
-                    'optional_uuid' => [Uuid::class, 'fromString']
-                ]
-            ]
+                    'optional_uuid' => [Uuid::class, 'fromString'],
+                ],
+            ],
         ]));
     }
 
-    public static function nullableTrueDataProvider(): \Traversable
+    public function setUp(): void
     {
-        yield [
+        parent::setUp();
+
+        $this->makeTable(
+            'users',
             [
-                Uuid1::class,
-                [
-                    'nullable' => true,
-                    'field' => 'optional_uuid',
-                    'node' => '00000fffffff',
-                    'clockSeq' => 0xffff
-                ]
-            ]
-        ];
-        yield [
-            [
-                Uuid2::class,
-                [
-                    'nullable' => true,
-                    'field' => 'optional_uuid',
-                    'localDomain' => Uuid::DCE_DOMAIN_PERSON,
-                    'localIdentifier' => new Integer('12345678')
-                ]
-            ]
-        ];
-        yield [
-            [
-                Uuid3::class,
-                [
-                    'nullable' => true,
-                    'field' => 'optional_uuid',
-                    'namespace' => Uuid::NAMESPACE_URL,
-                    'name' => 'https://example.com/foo'
-                ]
-            ]
-        ];
-        yield [[Uuid4::class, ['nullable' => true, 'field' => 'optional_uuid']]];
-        yield [
-            [
-                Uuid5::class,
-                [
-                    'nullable' => true,
-                    'field' => 'optional_uuid',
-                    'namespace' => Uuid::NAMESPACE_URL,
-                    'name' => 'https://example.com/foo'
-                ]
-            ]
-        ];
-        yield [
-            [
-                Uuid6::class,
-                [
-                    'nullable' => true,
-                    'field' => 'optional_uuid',
-                    'node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669
-                ]
-            ]
-        ];
-        yield [[Uuid7::class, ['nullable' => true, 'field' => 'optional_uuid']]];
+                'uuid' => 'string',
+                'optional_uuid' => 'string,nullable',
+            ],
+        );
     }
 }

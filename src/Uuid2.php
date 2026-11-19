@@ -47,7 +47,7 @@ final class Uuid2 extends Uuid
         private IntegerObject|string|null $localIdentifier = null,
         private Hexadecimal|string|null $node = null,
         private ?int $clockSeq = null,
-        bool $nullable = false
+        bool $nullable = false,
     ) {
         $this->field = $field;
         $this->column = $column;
@@ -65,7 +65,7 @@ final class Uuid2 extends Uuid
         'localIdentifier' => 'string|null',
         'node' => 'string|null',
         'clockSeq' => 'int|null',
-        'nullable' => 'bool'
+        'nullable' => 'bool',
     ])]
     protected function getListenerArgs(): array
     {
@@ -77,7 +77,7 @@ final class Uuid2 extends Uuid
                 : $this->localIdentifier,
             'node' => $this->node instanceof Hexadecimal ? (string) $this->node : $this->node,
             'clockSeq' => $this->clockSeq,
-            'nullable' => $this->nullable
+            'nullable' => $this->nullable,
         ];
     }
 }

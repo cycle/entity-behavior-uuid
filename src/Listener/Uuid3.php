@@ -15,9 +15,8 @@ final class Uuid3
         private string|UuidInterface $namespace,
         private string $name,
         private string $field = 'uuid',
-        private bool $nullable = false
-    ) {
-    }
+        private bool $nullable = false,
+    ) {}
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void

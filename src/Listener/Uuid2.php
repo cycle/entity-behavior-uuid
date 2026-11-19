@@ -18,9 +18,8 @@ final class Uuid2
         private IntegerObject|string|null $localIdentifier = null,
         private Hexadecimal|string|null $node = null,
         private ?int $clockSeq = null,
-        private bool $nullable = false
-    ) {
-    }
+        private bool $nullable = false,
+    ) {}
 
     #[Listen(OnCreate::class)]
     public function __invoke(OnCreate $event): void
@@ -38,7 +37,7 @@ final class Uuid2
 
         $event->state->register(
             $this->field,
-            Uuid::uuid2($this->localDomain, $this->localIdentifier, $this->node, $this->clockSeq)
+            Uuid::uuid2($this->localDomain, $this->localIdentifier, $this->node, $this->clockSeq),
         );
     }
 }

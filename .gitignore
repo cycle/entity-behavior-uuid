@@ -6,3 +6,8 @@ vendor/
 clover.xml
 docker-compose.override.yml
 .phpunit.result.cache
+/runtime/
+/vendor-bin/*/vendor/
+/vendor-bin/*/composer.lock
+/.agents/
+/.claude/

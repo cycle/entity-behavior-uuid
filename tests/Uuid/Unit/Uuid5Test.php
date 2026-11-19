@@ -5,25 +5,13 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Unit;
 
 use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
-use Cycle\ORM\Entity\Behavior\Uuid\Uuid5;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5 as Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Uuid5;
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
 
 final class Uuid5Test extends TestCase
 {
-    /**
-     * @dataProvider schemaDataProvider
-     */
-    public function testModifySchema(array $expected, array $args): void
-    {
-        $schema = [];
-        $uuid = new Uuid5(...$args);
-        $uuid->modifySchema($schema);
-
-        $this->assertSame($expected, $schema);
-    }
-
     public static function schemaDataProvider(): \Traversable
     {
         yield [
@@ -37,10 +25,10 @@ final class Uuid5Test extends TestCase
                             'name' => 'bar',
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            ['foo', 'bar']
+            ['foo', 'bar'],
         ];
         yield [
             [
@@ -53,10 +41,10 @@ final class Uuid5Test extends TestCase
                             'name' => 'bar',
                             'nullable' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            ['foo', 'bar', 'custom_uuid']
+            ['foo', 'bar', 'custom_uuid'],
         ];
         yield [
             [
@@ -69,10 +57,22 @@ final class Uuid5Test extends TestCase
                             'name' => 'bar',
                             'nullable' => true,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            ['foo', 'bar', 'custom_uuid', null, true]
+            ['foo', 'bar', 'custom_uuid', null, true],
         ];
+    }
+
+    /**
+     * @dataProvider schemaDataProvider
+     */
+    public function testModifySchema(array $expected, array $args): void
+    {
+        $schema = [];
+        $uuid = new Uuid5(...$args);
+        $uuid->modifySchema($schema);
+
+        $this->assertSame($expected, $schema);
     }
 }

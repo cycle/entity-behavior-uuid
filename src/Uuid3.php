@@ -35,7 +35,7 @@ final class Uuid3 extends Uuid
         private string $name,
         string $field = 'uuid',
         ?string $column = null,
-        bool $nullable = false
+        bool $nullable = false,
     ) {
         $this->field = $field;
         $this->column = $column;
@@ -54,7 +54,7 @@ final class Uuid3 extends Uuid
             'field' => $this->field,
             'namespace' => $this->namespace instanceof UuidInterface ? (string) $this->namespace : $this->namespace,
             'name' => $this->name,
-            'nullable' => $this->nullable
+            'nullable' => $this->nullable,
         ];
     }
 }

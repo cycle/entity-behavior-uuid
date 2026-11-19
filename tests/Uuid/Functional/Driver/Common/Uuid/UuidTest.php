@@ -21,17 +21,6 @@ abstract class UuidTest extends BaseTest
     protected Registry $registry;
     protected Tokenizer $tokenizer;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->tokenizer = new Tokenizer(new TokenizerConfig([
-            'directories' => [dirname(__DIR__, 4) . '/Fixtures/Uuid'],
-            'exclude' => [],
-        ]));
-    }
-
-
     /**
      * @dataProvider readersDataProvider
      */
@@ -116,8 +105,18 @@ abstract class UuidTest extends BaseTest
             $this->registry
                 ->getTableSchema($this->registry->getEntity(NullableUuid::class))
                 ->column('not_defined_uuid')
-                ->isNullable()
+                ->isNullable(),
         );
         $this->assertNull($fields->get('notDefinedUuid')->getGenerated());
+    }
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->tokenizer = new Tokenizer(new TokenizerConfig([
+            'directories' => [dirname(__DIR__, 4) . '/Fixtures/Uuid'],
+            'exclude' => [],
+        ]));
     }
 }
