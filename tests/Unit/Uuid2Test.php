@@ -8,6 +8,8 @@ use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2 as Listener;
 use Cycle\ORM\Entity\Behavior\Uuid\Uuid2;
 use Cycle\ORM\SchemaInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Testo\Assert;
 use Testo\Data\DataProvider;
 use Testo\Test;
@@ -106,6 +108,8 @@ final class Uuid2Test
                 ],
             ],
             [3, 'custom_uuid', null, 'foo', 'bar', 4],
+        ];
+        yield [
             [
                 SchemaInterface::LISTENERS => [
                     [
@@ -133,5 +137,20 @@ final class Uuid2Test
         $uuid->modifySchema($schema);
 
         Assert::same($schema, $expected);
+    }
+
+    public function testObjectArgumentsArePassedAsStrings(): void
+    {
+        $schema = [];
+
+        (new Uuid2(
+            localDomain: 0,
+            localIdentifier: new IntegerObject('1001'),
+            node: new Hexadecimal('0800200c9a66'),
+        ))->modifySchema($schema);
+
+        $args = $schema[SchemaInterface::LISTENERS][0][ListenerProvider::DEFINITION_ARGS];
+        Assert::same($args['localIdentifier'], '1001');
+        Assert::same($args['node'], '0800200c9a66');
     }
 }
