@@ -8,6 +8,7 @@ use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6 as Listener;
 use Cycle\ORM\Entity\Behavior\Uuid\Uuid6;
 use Cycle\ORM\SchemaInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Testo\Assert;
 use Testo\Data\DataProvider;
 use Testo\Test;
@@ -107,5 +108,14 @@ final class Uuid6Test
         $uuid->modifySchema($schema);
 
         Assert::same($schema, $expected);
+    }
+
+    public function testHexadecimalNodeIsPassedAsString(): void
+    {
+        $schema = [];
+
+        (new Uuid6(node: new Hexadecimal('0800200c9a66')))->modifySchema($schema);
+
+        Assert::same($schema[SchemaInterface::LISTENERS][0][ListenerProvider::DEFINITION_ARGS]['node'], '0800200c9a66');
     }
 }

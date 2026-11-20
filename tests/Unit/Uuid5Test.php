@@ -8,6 +8,7 @@ use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5 as Listener;
 use Cycle\ORM\Entity\Behavior\Uuid\Uuid5;
 use Cycle\ORM\SchemaInterface;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use Testo\Assert;
 use Testo\Data\DataProvider;
 use Testo\Test;
@@ -75,5 +76,14 @@ final class Uuid5Test
         $uuid->modifySchema($schema);
 
         Assert::same($schema, $expected);
+    }
+
+    public function testUuidNamespaceIsPassedAsString(): void
+    {
+        $schema = [];
+
+        (new Uuid5(RamseyUuid::fromString(RamseyUuid::NAMESPACE_URL), 'bar'))->modifySchema($schema);
+
+        Assert::same($schema[SchemaInterface::LISTENERS][0][ListenerProvider::DEFINITION_ARGS]['namespace'], RamseyUuid::NAMESPACE_URL);
     }
 }
