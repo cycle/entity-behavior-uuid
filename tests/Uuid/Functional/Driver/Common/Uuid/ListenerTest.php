@@ -87,6 +87,7 @@ abstract class ListenerTest extends BaseTest
         yield [[Uuid7::class, ['nullable' => true, 'field' => 'optional_uuid']]];
     }
 
+    #[\Testo\Test]
     public function testAssignManually(): void
     {
         $this->withListeners(Uuid4::class);
@@ -100,12 +101,11 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertSame($bytes, $data->uuid->getBytes());
+        \Testo\Assert::same($data->uuid->getBytes(), $bytes);
     }
 
-    /**
-     * @dataProvider nullableTrueDataProvider
-     */
+    #[\Testo\Test]
+    #[\Testo\Data\DataProvider('nullableTrueDataProvider')]
     public function testWithNullableTrue(array $listener): void
     {
         $this->withListeners($listener);
@@ -118,9 +118,10 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchData();
 
-        $this->assertNull($data[0]['optional_uuid']);
+        \Testo\Assert::null($data[0]['optional_uuid']);
     }
 
+    #[\Testo\Test]
     public function testUuid1(): void
     {
         $this->withListeners([Uuid1::class, ['node' => '00000fffffff', 'clockSeq' => 0xffff]]);
@@ -131,11 +132,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(1, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 1);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
+    #[\Testo\Test]
     public function testUuid2(): void
     {
         $this->withListeners([
@@ -152,11 +154,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(2, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 2);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
+    #[\Testo\Test]
     public function testUuid3(): void
     {
         $this->withListeners([
@@ -173,11 +176,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(3, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 3);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
+    #[\Testo\Test]
     public function testUuid4(): void
     {
         $this->withListeners(Uuid4::class);
@@ -188,11 +192,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(4, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 4);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
+    #[\Testo\Test]
     public function testUuid5(): void
     {
         $this->withListeners([
@@ -206,11 +211,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(5, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 5);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
+    #[\Testo\Test]
     public function testUuid6(): void
     {
         $this->withListeners([Uuid6::class, ['node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669]]);
@@ -221,11 +227,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(6, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 6);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
+    #[\Testo\Test]
     public function testUuid7(): void
     {
         $this->withListeners(Uuid7::class);
@@ -236,9 +243,9 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(7, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        \Testo\Assert::instanceOf($data->uuid, UuidInterface::class);
+        \Testo\Assert::same($data->uuid->getVersion(), 7);
+        \Testo\Assert::string($data->uuid->toString());
     }
 
     public function withListeners(array|string $listeners): void
@@ -261,6 +268,7 @@ abstract class ListenerTest extends BaseTest
         ]));
     }
 
+    #[\Testo\Lifecycle\BeforeTest]
     public function setUp(): void
     {
         parent::setUp();

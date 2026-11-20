@@ -10,7 +10,7 @@ use Cycle\ORM\Entity\Behavior\Uuid\Uuid3;
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
 
-final class Uuid3Test extends TestCase
+final class Uuid3Test
 {
     public static function schemaDataProvider(): \Traversable
     {
@@ -64,15 +64,14 @@ final class Uuid3Test extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider schemaDataProvider
-     */
+    #[\Testo\Test]
+    #[\Testo\Data\DataProvider('schemaDataProvider')]
     public function testModifySchema(array $expected, array $args): void
     {
         $schema = [];
         $uuid = new Uuid3(...$args);
         $uuid->modifySchema($schema);
 
-        $this->assertSame($expected, $schema);
+        \Testo\Assert::same($schema, $expected);
     }
 }
