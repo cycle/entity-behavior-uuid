@@ -8,8 +8,11 @@ use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid1 as Listener;
 use Cycle\ORM\Entity\Behavior\Uuid\Uuid1;
 use Cycle\ORM\SchemaInterface;
-use PHPUnit\Framework\TestCase;
+use Testo\Assert;
+use Testo\Data\DataProvider;
+use Testo\Test;
 
+#[Test]
 final class Uuid1Test
 {
     public static function schemaDataProvider(): \Traversable
@@ -96,14 +99,13 @@ final class Uuid1Test
         ];
     }
 
-    #[\Testo\Test]
-    #[\Testo\Data\DataProvider('schemaDataProvider')]
+    #[DataProvider('schemaDataProvider')]
     public function testModifySchema(array $expected, array $args): void
     {
         $schema = [];
         $uuid = new Uuid1(...$args);
         $uuid->modifySchema($schema);
 
-        \Testo\Assert::same($schema, $expected);
+        Assert::same($schema, $expected);
     }
 }
