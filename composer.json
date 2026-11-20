@@ -59,7 +59,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Cycle\\ORM\\Entity\\Behavior\\Uuid\\Tests\\": "tests/Uuid"
+            "Cycle\\ORM\\Entity\\Behavior\\Uuid\\Tests\\": "tests/"
         }
     },
     "repositories": [

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Feature\Common\Uuid;
 
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid1;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2;
@@ -12,8 +12,7 @@ use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid7;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Support\UuidTestCase;
 use Cycle\ORM\Heap\Heap;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
@@ -23,10 +22,8 @@ use Ramsey\Uuid\Type\Integer;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-abstract class ListenerTest extends BaseTest
+final class ListenerTest extends UuidTestCase
 {
-    use TableTrait;
-
     public static function nullableTrueDataProvider(): \Traversable
     {
         yield [
@@ -269,10 +266,8 @@ abstract class ListenerTest extends BaseTest
     }
 
     #[\Testo\Lifecycle\BeforeTest]
-    public function setUp(): void
+    protected function setUp(): void
     {
-        parent::setUp();
-
         $this->makeTable(
             'users',
             [

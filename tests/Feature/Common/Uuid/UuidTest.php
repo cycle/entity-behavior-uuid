@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Feature\Common\Uuid;
 
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\MultipleUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\NullableUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Post;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Support\UuidTestCase;
 use Cycle\ORM\Schema\GeneratedField;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid;
@@ -16,7 +16,7 @@ use Spiral\Attributes\ReaderInterface;
 use Spiral\Tokenizer\Config\TokenizerConfig;
 use Spiral\Tokenizer\Tokenizer;
 
-abstract class UuidTest extends BaseTest
+final class UuidTest extends UuidTestCase
 {
     protected Registry $registry;
     protected Tokenizer $tokenizer;
@@ -105,12 +105,10 @@ abstract class UuidTest extends BaseTest
     }
 
     #[\Testo\Lifecycle\BeforeTest]
-    public function setUp(): void
+    protected function setUp(): void
     {
-        parent::setUp();
-
         $this->tokenizer = new Tokenizer(new TokenizerConfig([
-            'directories' => [dirname(__DIR__, 4) . '/Fixtures/Uuid'],
+            'directories' => [\dirname(__DIR__, 3) . '/Fixtures/Uuid'],
             'exclude' => [],
         ]));
     }
