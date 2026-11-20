@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\Uuid;
+namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Feature\Common\Uuid;
 
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid1;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2;
@@ -12,8 +12,7 @@ use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6;
 use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid7;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Functional\Driver\Common\BaseTest;
-use Cycle\ORM\Entity\Behavior\Uuid\Tests\Traits\TableTrait;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Support\UuidTestCase;
 use Cycle\ORM\Heap\Heap;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
@@ -22,11 +21,13 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Testo\Assert;
+use Testo\Data\DataProvider;
+use Testo\Lifecycle\BeforeTest;
+use Testo\Test;
 
-abstract class ListenerTest extends BaseTest
+final class ListenerTest extends UuidTestCase
 {
-    use TableTrait;
-
     public static function nullableTrueDataProvider(): \Traversable
     {
         yield [
@@ -87,6 +88,7 @@ abstract class ListenerTest extends BaseTest
         yield [[Uuid7::class, ['nullable' => true, 'field' => 'optional_uuid']]];
     }
 
+    #[Test]
     public function testAssignManually(): void
     {
         $this->withListeners(Uuid4::class);
@@ -100,12 +102,11 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertSame($bytes, $data->uuid->getBytes());
+        Assert::same($data->uuid->getBytes(), $bytes);
     }
 
-    /**
-     * @dataProvider nullableTrueDataProvider
-     */
+    #[Test]
+    #[DataProvider('nullableTrueDataProvider')]
     public function testWithNullableTrue(array $listener): void
     {
         $this->withListeners($listener);
@@ -118,9 +119,10 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchData();
 
-        $this->assertNull($data[0]['optional_uuid']);
+        Assert::null($data[0]['optional_uuid']);
     }
 
+    #[Test]
     public function testUuid1(): void
     {
         $this->withListeners([Uuid1::class, ['node' => '00000fffffff', 'clockSeq' => 0xffff]]);
@@ -131,11 +133,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(1, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 1);
+        Assert::string($data->uuid->toString());
     }
 
+    #[Test]
     public function testUuid2(): void
     {
         $this->withListeners([
@@ -152,11 +155,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(2, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 2);
+        Assert::string($data->uuid->toString());
     }
 
+    #[Test]
     public function testUuid3(): void
     {
         $this->withListeners([
@@ -173,11 +177,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(3, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 3);
+        Assert::string($data->uuid->toString());
     }
 
+    #[Test]
     public function testUuid4(): void
     {
         $this->withListeners(Uuid4::class);
@@ -188,11 +193,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(4, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 4);
+        Assert::string($data->uuid->toString());
     }
 
+    #[Test]
     public function testUuid5(): void
     {
         $this->withListeners([
@@ -206,11 +212,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(5, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 5);
+        Assert::string($data->uuid->toString());
     }
 
+    #[Test]
     public function testUuid6(): void
     {
         $this->withListeners([Uuid6::class, ['node' => new Hexadecimal('0800200c9a66'), 'clockSeq' => 0x1669]]);
@@ -221,11 +228,12 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(6, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 6);
+        Assert::string($data->uuid->toString());
     }
 
+    #[Test]
     public function testUuid7(): void
     {
         $this->withListeners(Uuid7::class);
@@ -236,9 +244,9 @@ abstract class ListenerTest extends BaseTest
         $select = new Select($this->orm->with(heap: new Heap()), User::class);
         $data = $select->fetchOne();
 
-        $this->assertInstanceOf(UuidInterface::class, $data->uuid);
-        $this->assertSame(7, $data->uuid->getVersion());
-        $this->assertIsString($data->uuid->toString());
+        Assert::instanceOf($data->uuid, UuidInterface::class);
+        Assert::same($data->uuid->getVersion(), 7);
+        Assert::string($data->uuid->toString());
     }
 
     public function withListeners(array|string $listeners): void
@@ -261,10 +269,9 @@ abstract class ListenerTest extends BaseTest
         ]));
     }
 
-    public function setUp(): void
+    #[BeforeTest]
+    protected function setUp(): void
     {
-        parent::setUp();
-
         $this->makeTable(
             'users',
             [

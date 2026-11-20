@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Unit;
 
 use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
-use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid3 as Listener;
-use Cycle\ORM\Entity\Behavior\Uuid\Uuid3;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid5 as Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Uuid5;
 use Cycle\ORM\SchemaInterface;
-use PHPUnit\Framework\TestCase;
+use Testo\Assert;
+use Testo\Data\DataProvider;
+use Testo\Test;
 
-final class Uuid3Test extends TestCase
+#[Test]
+final class Uuid5Test
 {
     public static function schemaDataProvider(): \Traversable
     {
@@ -64,15 +67,13 @@ final class Uuid3Test extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider schemaDataProvider
-     */
+    #[DataProvider('schemaDataProvider')]
     public function testModifySchema(array $expected, array $args): void
     {
         $schema = [];
-        $uuid = new Uuid3(...$args);
+        $uuid = new Uuid5(...$args);
         $uuid->modifySchema($schema);
 
-        $this->assertSame($expected, $schema);
+        Assert::same($schema, $expected);
     }
 }

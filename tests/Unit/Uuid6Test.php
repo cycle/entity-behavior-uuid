@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Unit;
 
 use Cycle\ORM\Entity\Behavior\Dispatcher\ListenerProvider;
-use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid2 as Listener;
-use Cycle\ORM\Entity\Behavior\Uuid\Uuid2;
+use Cycle\ORM\Entity\Behavior\Uuid\Listener\Uuid6 as Listener;
+use Cycle\ORM\Entity\Behavior\Uuid\Uuid6;
 use Cycle\ORM\SchemaInterface;
-use PHPUnit\Framework\TestCase;
+use Testo\Assert;
+use Testo\Data\DataProvider;
+use Testo\Test;
 
-final class Uuid2Test extends TestCase
+#[Test]
+final class Uuid6Test
 {
     public static function schemaDataProvider(): \Traversable
     {
@@ -21,8 +24,6 @@ final class Uuid2Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'uuid',
-                            'localDomain' => 3,
-                            'localIdentifier' => null,
                             'node' => null,
                             'clockSeq' => null,
                             'nullable' => false,
@@ -30,7 +31,7 @@ final class Uuid2Test extends TestCase
                     ],
                 ],
             ],
-            [3],
+            [],
         ];
         yield [
             [
@@ -39,8 +40,6 @@ final class Uuid2Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'custom_uuid',
-                            'localDomain' => 3,
-                            'localIdentifier' => null,
                             'node' => null,
                             'clockSeq' => null,
                             'nullable' => false,
@@ -48,7 +47,7 @@ final class Uuid2Test extends TestCase
                     ],
                 ],
             ],
-            [3, 'custom_uuid'],
+            ['custom_uuid'],
         ];
         yield [
             [
@@ -57,16 +56,14 @@ final class Uuid2Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'custom_uuid',
-                            'localDomain' => 3,
-                            'localIdentifier' => 'foo',
-                            'node' => null,
+                            'node' => 'foo',
                             'clockSeq' => null,
                             'nullable' => false,
                         ],
                     ],
                 ],
             ],
-            [3, 'custom_uuid', null, 'foo'],
+            ['custom_uuid', null, 'foo'],
         ];
         yield [
             [
@@ -75,16 +72,14 @@ final class Uuid2Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'custom_uuid',
-                            'localDomain' => 3,
-                            'localIdentifier' => 'foo',
-                            'node' => 'bar',
-                            'clockSeq' => null,
+                            'node' => 'foo',
+                            'clockSeq' => 3,
                             'nullable' => false,
                         ],
                     ],
                 ],
             ],
-            [3, 'custom_uuid', null, 'foo', 'bar'],
+            ['custom_uuid', null, 'foo', 3],
         ];
         yield [
             [
@@ -93,44 +88,24 @@ final class Uuid2Test extends TestCase
                         ListenerProvider::DEFINITION_CLASS => Listener::class,
                         ListenerProvider::DEFINITION_ARGS => [
                             'field' => 'custom_uuid',
-                            'localDomain' => 3,
-                            'localIdentifier' => 'foo',
-                            'node' => 'bar',
-                            'clockSeq' => 4,
-                            'nullable' => false,
-                        ],
-                    ],
-                ],
-            ],
-            [3, 'custom_uuid', null, 'foo', 'bar', 4],
-            [
-                SchemaInterface::LISTENERS => [
-                    [
-                        ListenerProvider::DEFINITION_CLASS => Listener::class,
-                        ListenerProvider::DEFINITION_ARGS => [
-                            'field' => 'custom_uuid',
-                            'localDomain' => 3,
-                            'localIdentifier' => 'foo',
-                            'node' => 'bar',
-                            'clockSeq' => 4,
+                            'node' => 'foo',
+                            'clockSeq' => 3,
                             'nullable' => true,
                         ],
                     ],
                 ],
             ],
-            [3, 'custom_uuid', null, 'foo', 'bar', 4, true],
+            ['custom_uuid', null, 'foo', 3, true],
         ];
     }
 
-    /**
-     * @dataProvider schemaDataProvider
-     */
+    #[DataProvider('schemaDataProvider')]
     public function testModifySchema(array $expected, array $args): void
     {
         $schema = [];
-        $uuid = new Uuid2(...$args);
+        $uuid = new Uuid6(...$args);
         $uuid->modifySchema($schema);
 
-        $this->assertSame($expected, $schema);
+        Assert::same($schema, $expected);
     }
 }
