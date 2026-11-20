@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Cycle\ORM\Entity\Behavior\Uuid\Tests\Feature\Common\Uuid;
 
+use Cycle\Annotated\Entities;
+use Cycle\Annotated\Locator\TokenizerEntityLocator;
+use Cycle\Annotated\MergeColumns;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Comment;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\MultipleUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\NullableUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Post;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Support\UuidTestCase;
 use Cycle\ORM\Schema\GeneratedField;
+use Cycle\Schema\Compiler;
+use Cycle\Schema\Generator\GenerateModifiers;
+use Cycle\Schema\Generator\ResetTables;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid;
 use Spiral\Attributes\ReaderInterface;
@@ -106,6 +113,37 @@ final class UuidTest extends UuidTestCase
             ->column('not_defined_uuid')
             ->isNullable());
         Assert::null($fields->get('notDefinedUuid')->getGenerated());
+    }
+
+    #[Test]
+    #[DataProvider('readersDataProvider')]
+    public function testAddColumnNamedAfterField(ReaderInterface $reader): void
+    {
+        $this->compileWithTokenizer($this->tokenizer, $reader);
+
+        $fields = $this->registry->getEntity(Comment::class)->getFields();
+
+        Assert::true($fields->hasColumn('token'));
+        Assert::same($fields->get('token')->getType(), 'uuid');
+        Assert::same($fields->get('token')->getTypecast(), [Uuid::class, 'fromString']);
+        Assert::same($fields->get('token')->getGenerated(), GeneratedField::BEFORE_INSERT);
+    }
+
+    #[Test]
+    #[DataProvider('readersDataProvider')]
+    public function testComputeConfiguresKnownColumns(ReaderInterface $reader): void
+    {
+        (new Compiler())->compile($this->registry = new Registry($this->dbal), [
+            new Entities(new TokenizerEntityLocator($this->tokenizer->classLocator(), $reader), $reader),
+            new ResetTables(),
+            new MergeColumns($reader),
+            new GenerateModifiers(),
+        ]);
+
+        $user = $this->registry->getEntity(User::class)->getFields()->get('uuid');
+        Assert::same($user->getTypecast(), [Uuid::class, 'fromString']);
+        Assert::same($user->getGenerated(), GeneratedField::BEFORE_INSERT);
+        Assert::null($this->registry->getEntity(NullableUuid::class)->getFields()->get('notDefinedUuid')->getGenerated());
     }
 
     #[BeforeTest]

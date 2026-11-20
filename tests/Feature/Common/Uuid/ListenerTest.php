@@ -161,6 +161,24 @@ final class ListenerTest extends UuidTestCase
     }
 
     #[Test]
+    public function testUuid2WithStringArguments(): void
+    {
+        $this->withListeners([
+            Uuid2::class,
+            [
+                'localDomain' => Uuid::DCE_DOMAIN_PERSON,
+                'localIdentifier' => '1001',
+                'node' => '0800200c9a66',
+            ],
+        ]);
+
+        $this->save(new User());
+
+        $data = (new Select($this->orm->with(heap: new Heap()), User::class))->fetchOne();
+        Assert::string($data->uuid->toString())->startsWith('000003e9-')->endsWith('-0800200c9a66');
+    }
+
+    #[Test]
     public function testUuid3(): void
     {
         $this->withListeners([
@@ -231,6 +249,17 @@ final class ListenerTest extends UuidTestCase
         Assert::instanceOf($data->uuid, UuidInterface::class);
         Assert::same($data->uuid->getVersion(), 6);
         Assert::string($data->uuid->toString());
+    }
+
+    #[Test]
+    public function testUuid6WithStringNode(): void
+    {
+        $this->withListeners([Uuid6::class, ['node' => '0800200c9a66']]);
+
+        $this->save(new User());
+
+        $data = (new Select($this->orm->with(heap: new Heap()), User::class))->fetchOne();
+        Assert::string($data->uuid->toString())->endsWith('-0800200c9a66');
     }
 
     #[Test]
