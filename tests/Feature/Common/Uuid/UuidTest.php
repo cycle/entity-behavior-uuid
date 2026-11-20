@@ -8,15 +8,22 @@ use Cycle\Annotated\Entities;
 use Cycle\Annotated\Locator\TokenizerEntityLocator;
 use Cycle\Annotated\MergeColumns;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Comment;
+use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Document;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\MultipleUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\NullableUuid;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\Post;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Fixtures\Uuid\User;
 use Cycle\ORM\Entity\Behavior\Uuid\Tests\Support\UuidTestCase;
+use Cycle\ORM\Heap\Heap;
 use Cycle\ORM\Schema\GeneratedField;
+use Cycle\ORM\Select;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator\GenerateModifiers;
+use Cycle\Schema\Generator\GenerateTypecast;
+use Cycle\Schema\Generator\RenderModifiers;
+use Cycle\Schema\Generator\RenderTables;
 use Cycle\Schema\Generator\ResetTables;
+use Cycle\Schema\Generator\SyncTables;
 use Cycle\Schema\Registry;
 use Ramsey\Uuid\Uuid;
 use Spiral\Attributes\ReaderInterface;
@@ -144,6 +151,30 @@ final class UuidTest extends UuidTestCase
         Assert::same($user->getTypecast(), [Uuid::class, 'fromString']);
         Assert::same($user->getGenerated(), GeneratedField::BEFORE_INSERT);
         Assert::null($this->registry->getEntity(NullableUuid::class)->getFields()->get('notDefinedUuid')->getGenerated());
+    }
+
+    #[Test]
+    #[DataProvider('readersDataProvider')]
+    public function testGeneratesDeclaredUuidsOnPersist(ReaderInterface $reader): void
+    {
+        $this->withSchema((new Compiler())->compile(new Registry($this->dbal), [
+            new Entities(new TokenizerEntityLocator($this->tokenizer->classLocator(), $reader), $reader),
+            new ResetTables(),
+            new MergeColumns($reader),
+            new GenerateModifiers(),
+            new RenderTables(),
+            new RenderModifiers(),
+            new SyncTables(),
+            new GenerateTypecast(),
+        ]));
+
+        $this->save(new Document());
+
+        $document = (new Select($this->orm->with(heap: new Heap()), Document::class))->fetchOne();
+        Assert::same($document->uuid->getVersion(), 6);
+        Assert::string($document->dce->toString())->startsWith('000003e9-');
+        Assert::same($document->md5->toString(), Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo')->toString());
+        Assert::same($document->sha1->toString(), Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo')->toString());
     }
 
     #[BeforeTest]
